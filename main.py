@@ -58,18 +58,21 @@ class Workbook_Worker():
                         found = Workbook_Worker.find_if_substring(
                             value, second_column)
                         if(not found):
+                            print(value)
                             self.unique_values[i].append(value)
+                        else:
+                            pass
             i += 1
         print(self.unique_values)
 
     @staticmethod
     def find_if_substring(value, column_array):
-        if(len(value) < 3):
-            return False
+        # if(len(value) < 3):
+        #     return False
         for val in column_array:
             if(value in val):
                 return True
-            if(val in value):
+            elif(val in value):
                 return True
         return False
 
