@@ -12,8 +12,8 @@ class Workbook_Worker():
         self.sheet = self.wb.active
         self.columns_in_sheet = []
         self.unique_values = []
+        self.rows = [x.split('\n') for x in columns]
         # self.add_column()
-        self.rows = columns[0].split('\n')
         """ Save the workbook """
         self.read_columns()
         self.compare_columns()
@@ -22,9 +22,13 @@ class Workbook_Worker():
 
     def add_column(self):
         i = 1
+        col = 1
         for x in self.rows:
-            self.sheet.cell(column=2, row=i).value = x
-            i += 1
+            if(len(x) > 1):
+                for value in x:
+                    self.sheet.cell(column=col, row=i).value = value
+                    i += 1
+            col += 1
 
     def read_columns(self):
         """
@@ -56,6 +60,7 @@ class Workbook_Worker():
                         if(not found):
                             self.unique_values[i].append(value)
             i += 1
+        print(self.unique_values)
 
     @staticmethod
     def find_if_substring(value, column_array):
@@ -66,10 +71,8 @@ class Workbook_Worker():
                 return True
             if(val in value):
                 return True
-        print(value)
-
         return False
 
 
 if __name__ == '__main__':
-    Workbook_Worker('numbers')
+    Workbook_Worker('numbers_new')
