@@ -11,11 +11,13 @@ class Workbook_Worker():
         self.wb = load_workbook(f"{workbook}.xlsx")
         self.sheet = self.wb.active
         self.columns_in_sheet = []
+        self.unique_values = []
         # self.add_column()
         self.rows = columns[0].split('\n')
         """ Save the workbook """
         self.read_columns()
         self.compare_columns()
+
         # self.wb.save(f'{workbook}_new.xlsx')
 
     def add_column(self):
@@ -32,28 +34,41 @@ class Workbook_Worker():
             it is None
         """
         letter = 'A'
-        for index in range(0, len(columns)+1):
+        for index in range(0, len(columns)):
             self.columns_in_sheet.append([])
             for row in range(1, self.sheet.max_row+1):
-                self.columns_in_sheet[index].append(
-                    self.sheet[f"{letter}{row}"].value)
+                value = self.sheet[f"{letter}{row}"].value
+                if(value != None):
+                    self.columns_in_sheet[index].append(
+                        value)
             letter = chr(ord(letter) + 1)
 
     def compare_columns(self):
-        unique_values = []
+        self.unique_values = []
         i = 0
         for col in self.columns_in_sheet:
-            unique_values.append([])
+            self.unique_values.append([])
             for value in col:
                 for second_column in self.columns_in_sheet:
-                    found = False
-                    if(value in second_column and second_column != col or value == None):
-                        found = True
-                        break
-                if(not found):
-                    unique_values[i].append(value)
+                    if(second_column != col):
+                        found = Workbook_Worker.find_if_substring(
+                            value, second_column)
+                        if(not found):
+                            self.unique_values[i].append(value)
             i += 1
-        print(unique_values)
+
+    @staticmethod
+    def find_if_substring(value, column_array):
+        if(len(value) < 3):
+            return False
+        for val in column_array:
+            if(value in val):
+                return True
+            if(val in value):
+                return True
+        print(value)
+
+        return False
 
 
 if __name__ == '__main__':

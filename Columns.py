@@ -3,7 +3,11 @@ This should contain an array of strings, the length of the array shpuuld be the 
 of columns in the excel sheet
 """
 
-columns = ["""
+columns = [
+    """
+    sss
+    """,
+    """
 One
 Two
 Three
@@ -11,9 +15,4 @@ Twenty
 Fifty
 Eight
 """,
-           """
-ddd
-dwdw
-dwdwd
-dwwdw
-"""]
+]
